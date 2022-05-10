@@ -22,6 +22,7 @@ const io = new Server(server, {
 
 // Route imports
 const routes = require('./src/routes/api')
+const { addChatMessage } = require('./src/helpers/chat.helper')
 
 const port = process.env.PORT || 3000
 
@@ -60,6 +61,21 @@ server.listen(port, () => {
 })
 
 io.on('connection', async socket => {
+  let userTotalSum = 0
+  const query = socket.handshake.query
   // eslint-disable-next-line
-  console.log('a user connected', socket)
+  console.log('a user connected', query.name)
+  io.emit('userConnect', query.name)
+
+  socket.on('chatMessage', message => {
+    const messageObject = { user: query.name, message }
+    io.emit('chatMessage', messageObject)
+    addChatMessage(messageObject)
+  })
+
+  socket.on('rollDice', () => {
+    const randDice = Math.floor(Math.random() * 6 + 1)
+    userTotalSum += randDice
+    io.emit('rolledDice', { user: query.name, total: userTotalSum })
+  })
 })

@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const User = require('../models/ChatMessage')
 const jwt = require('jsonwebtoken')
 
 exports.signUp = async (req, res) => {
