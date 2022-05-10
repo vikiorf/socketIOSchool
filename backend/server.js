@@ -1,9 +1,11 @@
 //import dotenv
 require('dotenv').config()
 
-const morgan = require('morgan')
-const mongoose = require('./src/config/database')
 const pkg = require('./package.json')
+
+const mongoose = require('./src/config/database')
+
+const morgan = require('morgan')
 const cors = require('cors')
 
 const express = require('express')
@@ -80,5 +82,9 @@ io.on('connection', async socket => {
     const rollObject = { user: query.name, total: userTotalSum, roll: randDice }
     io.emit('rolledDice', rollObject)
     addRoll(rollObject)
+  })
+
+  socket.on('disconnect', () => {
+    io.emit('userDisconnect', query.name)
   })
 })

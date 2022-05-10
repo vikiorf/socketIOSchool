@@ -44,6 +44,10 @@
       this.connection.on('rolledDice', (dice) => {
         this.diceRolls.push(dice)
       })
+
+      this.connection.on('userDisconnect', (user) => {
+        this.messages.push(`${user} disconnected`)
+      })
     },
     methods: {
       rollDice() {
