@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/', () => {})
+const { findAllRolls } = require('../controllers/roll.controller')
+
+router.get('/', findAllRolls)
 
 module.exports = router

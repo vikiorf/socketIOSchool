@@ -23,6 +23,7 @@ const io = new Server(server, {
 // Route imports
 const routes = require('./src/routes/api')
 const { addChatMessage } = require('./src/helpers/chat.helper')
+const { addRoll } = require('./src/helpers/roll.helper')
 
 const port = process.env.PORT || 3000
 
@@ -76,6 +77,8 @@ io.on('connection', async socket => {
   socket.on('rollDice', () => {
     const randDice = Math.floor(Math.random() * 6 + 1)
     userTotalSum += randDice
-    io.emit('rolledDice', { user: query.name, total: userTotalSum })
+    const rollObject = { user: query.name, total: userTotalSum, roll: randDice }
+    io.emit('rolledDice', rollObject)
+    addRoll(rollObject)
   })
 })
