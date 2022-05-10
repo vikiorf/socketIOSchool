@@ -1,7 +1,6 @@
 <template>
   <form @submit.prevent="login">
-    <input type="email" v-model="email" />
-    <input type="password" v-model="password" />
+    <input type="text" v-model="name" placeholder="Type your name..." />
     <input type="submit" value="Login" />
   </form>
 </template>
@@ -13,8 +12,7 @@
   export default {
     data() {
       return {
-        email: null,
-        password: null
+        name: null
       }
     },
     computed: {
@@ -22,7 +20,7 @@
     },
     methods: {
       login() {
-        this.userStore.logIn({ email: this.email, password: this.password })
+        this.$router.push('/' + this.name)
       }
     }
   }

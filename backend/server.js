@@ -9,6 +9,17 @@ const cors = require('cors')
 const express = require('express')
 const app = express()
 
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
+
 // Route imports
 const routes = require('./src/routes/api')
 
@@ -43,7 +54,12 @@ app.get('/', (req, res) => {
   })
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   // eslint-disable-next-line
   console.log('Server running on port:', port)
+})
+
+io.on('connection', async socket => {
+  // eslint-disable-next-line
+  console.log('a user connected', socket)
 })
